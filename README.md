@@ -41,12 +41,23 @@ Every prediction ships with:
 
 ## Screenshots
 
-> _Add screenshots here after your first run — suggested shots: login screen,
-> dashboard, prediction result panel, analytics page._
+### Login
+![Login](docs/screenshots/login.png)
 
-| Dashboard | Prediction Result |
-|---|---|
-| `docs/screenshots/dashboard.png` | `docs/screenshots/prediction.png` |
+### Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Customers
+![Customers](docs/screenshots/customers.png)
+
+### Prediction Result 1
+![Prediction Result 1](docs/screenshots/prediction(1).png)
+
+### Prediction Result 2
+![Prediction Result 2](docs/screenshots/prediction(2).png)
+
+### Analytics
+![Analytics](docs/screenshots/analytics.png)
 
 ## Technology Used
 
