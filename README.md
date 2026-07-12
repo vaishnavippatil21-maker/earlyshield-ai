@@ -51,10 +51,10 @@ Every prediction ships with:
 ![Customers](docs/screenshots/customers.png)
 
 ### Prediction Result 1
-![Prediction Result 1](docs/screenshots/prediction(1).png)
+![Prediction Result 1](docs/screenshots/prediction1.png)
 
 ### Prediction Result 2
-![Prediction Result 2](docs/screenshots/prediction(2).png)
+![Prediction Result 2](docs/screenshots/prediction2.png)
 
 ### Analytics
 ![Analytics](docs/screenshots/analytics.png)
