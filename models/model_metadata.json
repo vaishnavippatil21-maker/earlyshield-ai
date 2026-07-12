@@ -1,0 +1,51 @@
+{
+  "backend": "xgboost",
+  "accuracy": 0.8596,
+  "precision": 0.8603,
+  "recall": 0.8596,
+  "f1_score": 0.8599,
+  "confusion_matrix": [
+    [
+      108,
+      0,
+      27
+    ],
+    [
+      0,
+      575,
+      49
+    ],
+    [
+      22,
+      48,
+      211
+    ]
+  ],
+  "classes": [
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "feature_importance": {
+    "Age": 0.018632305786013603,
+    "Income": 0.01962493546307087,
+    "Expenses": 0.0207985769957304,
+    "Credit_Score": 0.0864347368478775,
+    "Loan_Amount": 0.030622797086834908,
+    "Loan_Type_Encoded": 0.01564505696296692,
+    "Savings": 0.04664897918701172,
+    "EMI": 0.04261981323361397,
+    "EMI_Ratio": 0.2804192304611206,
+    "Salary_Delay_Days": 0.04930807277560234,
+    "Late_Payments": 0.07509487122297287,
+    "Credit_Utilization": 0.051119934767484665,
+    "Employment_Type_Encoded": 0.01703323796391487,
+    "Transaction_Frequency": 0.017490020021796227,
+    "Existing_Loans": 0.016058770939707756,
+    "Account_Balance": 0.022758718580007553,
+    "Savings_To_Income": 0.07253511995077133,
+    "Disposable_Income": 0.1171547919511795
+  },
+  "train_rows": 4160,
+  "test_rows": 1040
+}

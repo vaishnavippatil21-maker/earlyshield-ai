@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Portfolio Dashboard{% endblock %}
+{% block page_subtitle %}Live view of customer risk across your loan book{% endblock %}
+
+{% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-blue"><i class="bi bi-people"></i></div>
+            <span class="stat-label">Total Customers</span>
+            <span class="stat-value">{{ stats.total_customers }}</span>
+            <span class="stat-trend text-muted">Active portfolio</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-low"><i class="bi bi-shield-check"></i></div>
+            <span class="stat-label">Low Risk</span>
+            <span class="stat-value">{{ stats.low_risk }}</span>
+            <span class="stat-trend" style="color:var(--risk-low)">Healthy accounts</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-medium"><i class="bi bi-shield-exclamation"></i></div>
+            <span class="stat-label">Medium Risk</span>
+            <span class="stat-value">{{ stats.medium_risk }}</span>
+            <span class="stat-trend" style="color:var(--risk-medium)">Needs monitoring</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-high"><i class="bi bi-exclamation-octagon"></i></div>
+            <span class="stat-label">High Risk</span>
+            <span class="stat-value">{{ stats.high_risk }}</span>
+            <span class="stat-trend" style="color:var(--risk-high)">Needs intervention</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-lg-4">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <div>
+                    <h2>Average Risk Score</h2>
+                    <p>Across {{ stats.total_predictions }} predictions run</p>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center justify-content-center py-3">
+                <canvas id="avgRiskGauge" width="220" height="140"></canvas>
+                <div class="risk-gauge-value">{{ stats.average_risk_score }}%</div>
+                <div class="risk-gauge-label">Portfolio-wide average</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <div>
+                    <h2>Risk Distribution</h2>
+                    <p>Share of scored customers by category</p>
+                </div>
+            </div>
+            <canvas id="riskPieChart" height="220"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <div>
+                    <h2>Risk Volume</h2>
+                    <p>Customer count per category</p>
+                </div>
+            </div>
+            <canvas id="riskBarChart" height="220"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="section-card">
+    <div class="section-card-header">
+        <div>
+            <h2>Recent Predictions</h2>
+            <p>Latest customers scored by the risk engine</p>
+        </div>
+        <a href="{{ url_for('history') }}" class="btn btn-outline-navy btn-sm">View all <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+
+    {% if stats.recent_predictions %}
+    <div class="table-responsive">
+        <table class="table table-clean">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Risk Category</th>
+                    <th>Probability</th>
+                    <th>Scored At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in stats.recent_predictions %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="customer-avatar">{{ (p.customer_name or 'W')[0] }}</span>
+                            <div>
+                                <div class="fw-semibold">{{ p.customer_name }}</div>
+                                <div class="text-muted small">{{ p.customer_code or '—' }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="risk-badge risk-{{ p.risk_category.lower() }}">{{ p.risk_category }}</span></td>
+                    <td class="figure">{{ (p.risk_probability * 100) | round(1) }}%</td>
+                    <td class="text-muted">{{ p.created_at.split('T')[0] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="bi bi-cpu"></i>
+        No predictions yet. <a href="{{ url_for('predict_page') }}">Run your first risk prediction</a>.
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const dashboardStats = {
+        low: {{ stats.low_risk }},
+        medium: {{ stats.medium_risk }},
+        high: {{ stats.high_risk }},
+        avgRisk: {{ stats.average_risk_score }}
+    };
+</script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>renderDashboardCharts(dashboardStats);</script>
+{% endblock %}

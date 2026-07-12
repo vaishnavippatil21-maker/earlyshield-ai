@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.Python
+venv/
+env/
+.venv/
+
+# Flask / runtime
+instance/
+.env
+*.log
+
+# Database (regenerated on first run via bootstrap_app())
+database/earlyshield.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Keep the trained model and dataset tracked in git so the app runs
+# immediately after clone without a retraining step.
+!models/risk_model.pkl
+!models/model_metadata.json
+!dataset/customer_banking_data.csv

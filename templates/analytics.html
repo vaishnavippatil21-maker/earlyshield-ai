@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block page_title %}Portfolio Analytics{% endblock %}
+{% block page_subtitle %}Trends across the scored customer base{% endblock %}
+
+{% block content %}
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-blue"><i class="bi bi-graph-up"></i></div>
+            <span class="stat-label">Avg. Credit Score</span>
+            <span class="stat-value">{{ data.average_credit_score | int }}</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-blue"><i class="bi bi-cash-stack"></i></div>
+            <span class="stat-label">Avg. Monthly Income</span>
+            <span class="stat-value">₹{{ "{:,.0f}".format(data.average_income) }}</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-high"><i class="bi bi-percent"></i></div>
+            <span class="stat-label">High Risk Share</span>
+            <span class="stat-value">{{ data.high_risk_percentage }}%</span>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card">
+            <div class="stat-icon tone-low"><i class="bi bi-check2-all"></i></div>
+            <span class="stat-label">Predictions Logged</span>
+            <span class="stat-value">{{ data.risk_distribution.Low + data.risk_distribution.Medium + data.risk_distribution.High }}</span>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-5">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <div>
+                    <h2>Risk Distribution</h2>
+                    <p>Share of all predictions by risk category</p>
+                </div>
+            </div>
+            {% if data.risk_distribution.Low + data.risk_distribution.Medium + data.risk_distribution.High > 0 %}
+            <canvas id="analyticsRiskPie" height="240"></canvas>
+            {% else %}
+            <div class="empty-state"><i class="bi bi-pie-chart"></i>No predictions logged yet.</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="section-card h-100">
+            <div class="section-card-header">
+                <div>
+                    <h2>Monthly Predictions</h2>
+                    <p>Volume of risk assessments run over time</p>
+                </div>
+            </div>
+            {% if data.monthly_predictions %}
+            <canvas id="monthlyPredictionsChart" height="220"></canvas>
+            {% else %}
+            <div class="empty-state"><i class="bi bi-calendar3"></i>No monthly trend data yet.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    const analyticsData = {{ data | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script>renderAnalyticsCharts(analyticsData);</script>
+{% endblock %}
